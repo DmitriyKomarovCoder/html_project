@@ -14,3 +14,14 @@ def myads(request):
 
 def ad(request):
     return render(request, "main/shop.html", {"title": card.title})
+
+
+def redactor(request):
+    return render(request, "main/redactor.html", {'title': 'Редактор'})
+
+def reg(request):
+    return render(request, "main/user.html", {'title': 'Регистрация'})
+
+def enter(request):
+    return render(request, "main/user_enter.html", {'title': 'Войти'})
+

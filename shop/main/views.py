@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import card
+from .forms import cardForm
 
 
 def index(request):
@@ -13,15 +14,25 @@ def myads(request):
 
 
 def ad(request):
-    return render(request, "main/shop.html", {"title": card.title})
+    return render(request, "main/shop.html", {"title": 'Объявление'})
 
 
 def redactor(request):
-    return render(request, "main/redactor.html", {'title': 'Редактор'})
+    if request.method == 'POST':
+        form = cardForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/my-ads')
+    form = cardForm()
+    context = {
+        'form': form
+    }
+    return render(request, "main/redactor.html", context)
 
 def reg(request):
     return render(request, "main/user.html", {'title': 'Регистрация'})
 
 def enter(request):
     return render(request, "main/user_enter.html", {'title': 'Войти'})
+
 

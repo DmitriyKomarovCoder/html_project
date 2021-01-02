@@ -7,4 +7,5 @@ urlpatterns = [
     path("redactor", views.redactor),
     path('reg', views.reg),
     path('enter', views.enter)
+
 ]

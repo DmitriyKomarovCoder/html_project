@@ -6,20 +6,20 @@
 {% block content %}
     <div class='container-fluid'>
         <div class="row">
-            <h2 class="col-3 mt-3 ml-5">Новые объявления</h2>
+            <h2 class="col-3 mt-5 ml-5">Новые объявления</h2>
         </div>
             <div class="row">
                     <div class="mt-5  col-8">
                         {% if cards %}
                             {% for i in cards %}
                                 <div class="card mb-3 bg-dark text-white">
-                                    <img src="https://storage.mebelshara.ru/images/minimized/good70937_color22856_3.jpg?1642902027" alt="" class="card-img-top">
+                                    <img src="{{ i.image.url }}" alt="" class="card-img-top">
                                     <div class="card-body">
                                         <h5 class="card-title">{{i.title}}</h5>
-                                        <p class="card-text">{{i.description}}</p>
+                                        <p class="card-text">{{i.annotation}}</p>
                                         <div class="row">
-                                            <a href="/ad" class="btn btn-outline-success">Подробнее</a>
-                                            <h5 class="my-2 ml-auto mr-5">Цена: 50000 $</h5>
+                                            <a href="{% url 'ad'  i.id %}" class="btn btn-outline-success">Подробнее</a>
+                                            <h5 class="my-2 ml-auto mr-5">{{ i.price }} рублей</h5>
                                         </div>
                                     </div>
                                 </div>

@@ -9,28 +9,31 @@
             <div class="row">
                 <h2 class="ml-5 mt-4" >Мои Объявления</h2>
             </div>
-            <div class="row justify-content-center">
+            <div class="justify-content-center">
                 {% if cards %}
                     <div class="card-deck mt-5 ">
                         {% for i in cards %}
-                            <div class="card ml-5">
-                                <img class="card-img-top" src="shop1.jpg" alt="фотка">
+                            <div class="card ml-5 mr-5">
+                                <img class="card-img-top" src="{{ i.image.url }}" alt="фотка">
                                 <div class="card-body">
                                     <a class="card-title">{{i.title}}</a>
-                                    <p>{{i.description}}</p>
-                                    <a href="#" class="btn btn-outline-success my-auto">Редактировать</a>
+                                    <p>{{i.annotation}}</p>
+                                    <a href="{% url 'update_ad' i.id %}" class="btn btn-outline-success btn-sm my-auto">Редактировать</a>
+                                    <div class="mt-2">
+                                        <a href="{% url 'delete_ad' i.id %}" class="btn btn-outline-danger btn-sm my-auto mt-2 ">Удалить</a>
+                                    </div>
                                 </div>
                             </div>
                         {% endfor %}
                 {% else %}
-                        <p class="mt-5">У вас пока нет объявлений<p>
+                        <p class="mt-5 ">У вас пока нет объявлений<p>
                 {%endif%}
 
 
                     </div>
             </div>
             <div class="row justify-content-center mt-5">
-                <a href="/redactor" class="btn btn-outline-success btn-lg">Добавить объявление</a>
+                <a href="/redactor" class="btn btn-outline-success btn-lg mb-3">Добавить объявление</a>
             </div>
     </div>
 {% endblock %}

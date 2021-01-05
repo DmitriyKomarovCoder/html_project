@@ -17,6 +17,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=15, verbose_name='Название Товара')),
                 ('description', models.TextField(verbose_name='Описнаие')),
+
+
             ],
         ),
     ]

@@ -5,10 +5,14 @@ from django.views.generic import DetailView, UpdateView, DeleteView, CreateView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+
+
 class UserLoginView(LoginView):
     template_name = 'main/user_enter.html'
     form_class = UserLogForm
-    success_url = ''
+    success_url = '/'
+    def get_success_url(self):
+        return self.success_url
 
 class UserRegisterView(CreateView):
     model = User
@@ -58,9 +62,11 @@ def myads(request):
 
 def redactor(request):
     if request.method == 'POST':
-        form = cardForm(request.POST)
+        form = cardForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+
+
             return redirect('/my-ads')
     form = cardForm()
     context = {

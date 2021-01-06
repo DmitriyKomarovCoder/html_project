@@ -1,6 +1,6 @@
 from .models import card
 from django import forms
-from django.forms import ModelForm, TextInput, Textarea, DateTimeInput
+from django.forms import ModelForm, TextInput, Textarea
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 

@@ -8,12 +8,12 @@
         <div class="row">
             <div class="col-6">
                 <h1 class="ml-4 mt-4">Редактор</h1>
-                <form method="post" class="mt-3 ml-4">
+                <form method="post" class="mt-3 ml-4" >
                     {% csrf_token %}
                     <div class="form-group">
                         <label class="mt-4">Загрузить фотографию товара</label>
                         <div class="row ml-1">
-                            {{form.image}}
+                            {{ form.image }}
                         </div>
                         <label class="mt-4">Введите название товара</label>
                         {{ form.title }}

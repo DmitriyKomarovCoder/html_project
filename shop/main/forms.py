@@ -1,13 +1,13 @@
 from .models import card
 from django import forms
-from django.forms import ModelForm, TextInput, Textarea
+from django.forms import ModelForm, TextInput, Textarea, PasswordInput, CharField
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 
 class cardForm(ModelForm):
     class Meta:
         model = card
-        fields = ["title", "description", 'price', "image", 'annotation']
+        fields = ["title", "description", 'price', "image", 'annotation', 'phone']
         widgets = {
                 "title": TextInput(attrs={
                     "class": 'form-control',
@@ -20,35 +20,28 @@ class cardForm(ModelForm):
                 "annotation": Textarea(attrs={
                     "class": 'form-control',
                     'placeholder': 'Краткая аннотация, которая заинтересует покупателя'
+            }),
+                "phone": TextInput(attrs={
+                "class": 'form-control',
+                'placeholder': 'Введите ваш номер телефона начиная с 8'
             })
 
 
         }
 
-class UserLogForm(ModelForm, AuthenticationForm):
+class AuthUserForm(AuthenticationForm, ModelForm):
     class Meta:
         model = User
-        fields = ['username', 'password']
-
-    widgets = {
-        "username": TextInput(attrs={
-            "class": 'form-control',
-            'placeholder': "Краткое название отражающее суть"
-        }),
-        "password": TextInput(attrs={
-            "class": 'form-control',
-            'placeholder': "Краткое название отражающее суть"
-        }),
-    }
-
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop('request', None)
-        super(UserLogForm, self).__init__(*args, **kwargs)
+        fields = ('username','password')
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'
 
 class UserRegisterForm(ModelForm):
     class Meta:
         model = User
-        fields = ['username', 'password']
+        fields = ['username', 'password', ]
         widgets = {
             "username": TextInput(attrs={
                 "class": 'form-control',

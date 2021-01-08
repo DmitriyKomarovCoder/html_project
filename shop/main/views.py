@@ -1,47 +1,52 @@
 from django.shortcuts import render, redirect
 from .models import card
-from .forms import cardForm, UserLogForm, UserRegisterForm
+from .forms import cardForm, UserRegisterForm, AuthUserForm
 from django.views.generic import DetailView, UpdateView, DeleteView, CreateView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from django.views.generic.edit import FormView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
-
-class UserLoginView(LoginView):
-    template_name = 'main/user_enter.html'
-    form_class = UserLogForm
-    success_url = '/'
-    def get_success_url(self):
-        return self.success_url
-
+class LoginFormView(FormView):
+    form_class = AuthUserForm
+    template_name = "main/user_enter.html"
+    success_url = "/"
+    def form_valid(self, form):
+        self.user = form.get_user()
+        login(self.request, self.user)
+        return super(LoginFormView, self).form_valid(form)
 class UserRegisterView(CreateView):
     model = User
     template_name = 'main/user.html'
     form_class = UserRegisterForm
-    success_url = '/'
+    success_url = "/"
     def form_valid(self, form):
         form_valid = super().form_valid(form)
-        username = self.cleaned_data['username']
+        username = form.cleaned_data['username']
         password = form.cleaned_data['password']
         aut_user = authenticate(username = username, password = password)
         login(self.request, aut_user)
         return form_valid
 
 
+
+
 class UserLogout(LogoutView):
     next_page = '/'
 
-class PAGE_OF_PRODUCT(DetailView):
+class PAGE_OF_PRODUCT(DetailView, LoginRequiredMixin):
     model = card
     template_name = 'main/shop.html'
     context_object_name = "card"
 
-class PAGE_OF_UPDATE(UpdateView):
+class PAGE_OF_UPDATE(UpdateView, LoginRequiredMixin):
     model = card
     template_name = "main/redactor.html"
     form_class = cardForm
     success_url = '/my-ads'
-class PAGE_OF_DELETE(DeleteView):
+class PAGE_OF_DELETE(DeleteView, LoginRequiredMixin):
     model = card
     success_url = '/my-ads'
     template_name = "main/Delete.html"
@@ -51,9 +56,9 @@ def index(request):
     cards = card.objects.order_by('-date')
     return render(request, 'main/n1.html', {'title': 'Главная страница', 'cards': cards})
 
-
+@login_required(login_url='main/user_enter.html')
 def myads(request):
-    cards = card.objects.all()
+    cards = card.objects.filter(author=request.user)
     return render(request, "main/index.html", {"title":'Мои объявления', 'cards': cards})
 
 
@@ -64,9 +69,10 @@ def redactor(request):
     if request.method == 'POST':
         form = cardForm(request.POST, request.FILES)
         if form.is_valid():
+            obj = form.save(commit=False)
+            obj.author = request.user
+            form = obj
             form.save()
-
-
             return redirect('/my-ads')
     form = cardForm()
     context = {

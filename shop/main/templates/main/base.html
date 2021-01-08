@@ -20,7 +20,7 @@
                     {% if request.user.is_authenticated %}
                         <li class="nav-link">
                             <div class = "btn-group">
-                                <button type="button" class="btn btn-outline-success dropdown-toggle my-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Пользователь</button>
+                                <button type="button" class="btn btn-outline-success dropdown-toggle my-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ request.user }}</button>
                                 <div class="dropdown-menu dropdown-menu-right mt-2">
                                     <a class="dropdown-item" href="/my-ads">Мои Объявления</a>
                                     <a class="dropdown-item" href="#">Кошелёк</a>

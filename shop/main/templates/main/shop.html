@@ -24,20 +24,34 @@
                 <button type="button" class=" btn btn-success btn-lg mt-5 btn-block" data-toggle="modal" data-target="#exampleModal">Номер продавца: 8 9XX - XXX - XX</button>
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Номер продавца</h5>
+                        {% if request.user.is_authenticated %}
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Номер продавца</h5>
+                                </div>
+                                <div class="modal-body">
+                                    Не забудь сообщить, что ты с Авито!
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="tel:{{ card.phone }}"class="btn-success mx-auto" >{{ card.phone }}</a>
+                                </div>
                             </div>
-                            <div class="modal-body">
-                                Не забудь сообщить, что ты с Авито!
+                        {% else %}
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Номер продавца</h5>
+                                </div>
+                                <div class="modal-body">
+                                    Авторизируйтесь, чтобы иметь возможность связаться с продавцом
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="{% url 'log' %}"class="btn-success mx-auto" >Авторизироваться</a>
+                                </div>
                             </div>
-                            <div class="modal-footer">
-                                <a href="tel:+78142332211"class="btn-success mx-auto" >+7(814)-233-22-11</a>
-                            </div>
-                        </div>
+                        {% endif %}
                     </div>
                 </div>
-                <h2 class="mt-4">Имя Продавца</h2>
+                <h2 class="mt-4">{{ card.author }}</h2>
                 <button type="button" class=" btn btn-primary btn-lg mt-5 btn-block">Другие объявления продавца</button>
             </div>
         </div>

@@ -1,13 +1,13 @@
-from .models import card
+from .models import card, Tag
 from django import forms
-from django.forms import ModelForm, TextInput, Textarea, PasswordInput, CharField
+from django.forms import ModelForm, TextInput, Textarea, PasswordInput, CharField, SelectMultiple
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 
 class cardForm(ModelForm):
     class Meta:
         model = card
-        fields = ["title", "description", 'price', "image", 'annotation', 'phone']
+        fields = ["title", "description", 'price', "image", 'annotation', 'phone', 'tags']
         widgets = {
                 "title": TextInput(attrs={
                     "class": 'form-control',
@@ -24,8 +24,10 @@ class cardForm(ModelForm):
                 "phone": TextInput(attrs={
                 "class": 'form-control',
                 'placeholder': 'Введите ваш номер телефона начиная с 8'
+            }),
+                "tags": SelectMultiple(attrs={
+                "class": 'form-control'
             })
-
 
         }
 
@@ -58,3 +60,5 @@ class UserRegisterForm(ModelForm):
         if commit:
             user.save()
         return user
+
+

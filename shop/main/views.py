@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import card
+from .models import card, Tag
 from .forms import cardForm, UserRegisterForm, AuthUserForm
 from django.views.generic import DetailView, UpdateView, DeleteView, CreateView
 from django.contrib.auth.views import LoginView, LogoutView
@@ -53,16 +53,15 @@ class PAGE_OF_DELETE(DeleteView, LoginRequiredMixin):
 
 
 def index(request):
+    tags = Tag.objects.all()
     cards = card.objects.order_by('-date')
-    return render(request, 'main/n1.html', {'title': 'Главная страница', 'cards': cards})
+    context = { 'tags': tags, 'cards': cards}
+    return render(request, 'main/n1.html', context)
 
 @login_required(login_url='main/user_enter.html')
 def myads(request):
     cards = card.objects.filter(author=request.user)
     return render(request, "main/index.html", {"title":'Мои объявления', 'cards': cards})
-
-
-
 
 
 def redactor(request):
@@ -84,4 +83,6 @@ def redactor(request):
 def reg(request):
     return render(request, "main/user.html", {'title': 'Регистрация'})
 
-
+def tag_detail(request, Tag):
+    tag = Tag.objects.get(Tag.id)
+    return render(request, "main/n1.html", context={'tag':tag })

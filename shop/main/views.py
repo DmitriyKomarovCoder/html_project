@@ -17,6 +17,7 @@ class LoginFormView(FormView):
         self.user = form.get_user()
         login(self.request, self.user)
         return super(LoginFormView, self).form_valid(form)
+
 class UserRegisterView(CreateView):
     model = User
     template_name = 'main/user.html'
@@ -46,6 +47,7 @@ class PAGE_OF_UPDATE(UpdateView, LoginRequiredMixin):
     template_name = "main/redactor.html"
     form_class = cardForm
     success_url = '/my-ads'
+
 class PAGE_OF_DELETE(DeleteView, LoginRequiredMixin):
     model = card
     success_url = '/my-ads'
@@ -58,20 +60,21 @@ def index(request):
     context = { 'tags': tags, 'cards': cards}
     return render(request, 'main/n1.html', context)
 
-@login_required(login_url='main/user_enter.html')
+@login_required(login_url='log')
 def myads(request):
     cards = card.objects.filter(author=request.user)
     return render(request, "main/index.html", {"title":'Мои объявления', 'cards': cards})
 
-
+@login_required(login_url='log')
 def redactor(request):
     if request.method == 'POST':
         form = cardForm(request.POST, request.FILES)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.author = request.user
-            form = obj
-            form.save()
+            obj.save()
+            obj.tags.set(form.cleaned_data.get("tags"))
+            form.save_m2m()
             return redirect('/my-ads')
     form = cardForm()
     context = {

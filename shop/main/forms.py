@@ -30,6 +30,8 @@ class cardForm(ModelForm):
             })
 
         }
+        tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all())
+
 
 class AuthUserForm(AuthenticationForm, ModelForm):
     class Meta:

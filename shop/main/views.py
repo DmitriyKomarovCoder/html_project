@@ -86,6 +86,8 @@ def redactor(request):
 def reg(request):
     return render(request, "main/user.html", {'title': 'Регистрация'})
 
-def tag_detail(request, Tag):
-    tag = Tag.objects.get(Tag.id)
-    return render(request, "main/n1.html", context={'tag':tag })
+def tag_detail(request, pk):
+    tag = Tag.objects.get(pk=pk)
+    tags = Tag.objects.all()
+
+    return render(request, "main/n1.html", context={'tag':tag, 'tags': tags },)

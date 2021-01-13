@@ -56,7 +56,7 @@ class PAGE_OF_DELETE(DeleteView, LoginRequiredMixin):
 
 def index(request):
     tags = Tag.objects.all()
-    cards = card.objects.order_by('-date')
+    cards = card.objects.values('id', 'title', 'image', 'annotation', 'price', 'tags__title').all()
     context = { 'tags': tags, 'cards': cards}
     return render(request, 'main/n1.html', context)
 
@@ -89,5 +89,5 @@ def reg(request):
 def tag_detail(request, pk):
     tag = Tag.objects.get(pk=pk)
     tags = Tag.objects.all()
-
-    return render(request, "main/n1.html", context={'tag':tag, 'tags': tags },)
+    cards = card.objects.values('id', 'title', 'image', 'annotation', 'price', 'tags__title').all()
+    return render(request, "main/n1.html", context={'tag':tag, 'cards': cards, 'tags': tags },)

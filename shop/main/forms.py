@@ -23,7 +23,7 @@ class cardForm(ModelForm):
             }),
                 "phone": TextInput(attrs={
                 "class": 'form-control',
-                'placeholder': 'Введите ваш номер телефона начиная с 8'
+                'placeholder': 'Введите ваш номер телефона, начиная с 8'
             }),
                 "tags": SelectMultiple(attrs={
                 "class": 'form-control'

@@ -72,6 +72,7 @@ def redactor(request):
         if form.is_valid():
             obj = form.save(commit=False)
             obj.author = request.user
+            print(obj.price)
             obj.save()
             obj.tags.set(form.cleaned_data.get("tags"))
             form.save_m2m()
@@ -89,5 +90,5 @@ def reg(request):
 def tag_detail(request, pk):
     tag = Tag.objects.get(pk=pk)
     tags = Tag.objects.all()
-    cards = card.objects.values('id', 'title', 'image', 'annotation', 'price', 'tags__title').all()
-    return render(request, "main/n1.html", context={'tag':tag, 'cards': cards, 'tags': tags },)
+    cards = card.objects.values('id', 'title', 'image', 'annotation', 'price', 'tags__title').filter(tags__pk=pk)
+    return render(request, "main/n1.html", context={'tag': tag, 'cards': cards, 'tags': tags}, )
